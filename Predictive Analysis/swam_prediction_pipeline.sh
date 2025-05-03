@@ -1,0 +1,4 @@
+# run_pipeline.sh
+python 01_create_actual_swam.py
+python 02_predict_swam_model.py
+python 03_blend_actual_and_predicted.py

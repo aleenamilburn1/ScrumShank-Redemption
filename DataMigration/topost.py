@@ -8,7 +8,7 @@ from glob import glob          # Allows pattern-based file search (e.g., *.csv)
 
 # The folder where your CSV files are stored
 # Make sure all your procurement CSVs are in this folder
-data_folder = '/Users/aleenamilburn/Desktop/Procurement_Data'
+data_folder = '/Users/aleenamilburn/Desktop/Cleaned_Procurement_Data'
 
 # PostgreSQL connection settings — update 'your_password' to match your real password
 db_config = {

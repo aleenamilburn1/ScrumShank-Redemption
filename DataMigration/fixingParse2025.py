@@ -1,7 +1,9 @@
 import os
+from glob import glob  
 
 # === CONFIG ===
-file_path = '/Users/aleenamilburn/Desktop/Procurement_Data/eva_procurement_data_2025.csv'  # Change this as needed
+data_folder = '/Users/aleenamilburn/Desktop/Cleaned_Procurement_Data'
+csv_files = glob(os.path.join(data_folder, 'eva_procurement_data_*.csv'))
 expected_column_count = 44  # Adjust if your schema changes
 
 # === FUNCTION TO CHECK ROWS ===
@@ -26,4 +28,5 @@ def inspect_csv_structure(file_path, expected_columns):
         print("✅ No malformed lines found! 🎉")
 
 # === RUN CHECK ===
-inspect_csv_structure(file_path, expected_column_count)
+for file_path in csv_files:
+    inspect_csv_structure(file_path, expected_column_count)
