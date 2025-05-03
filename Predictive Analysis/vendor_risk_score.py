@@ -50,7 +50,7 @@ print(X_train.describe())  # Check original feature ranges
 
 print(X.corrwith(y))
 
-# 🚨 NEW: Normalize Features
+# Normalize Features
 scaler = StandardScaler()  # Standardization (mean=0, std=1)
 X_train_scaled = scaler.fit_transform(X_train)  # Fit only on training data
 X_test_scaled = scaler.transform(X_test)  # Transform test data using the same scaler

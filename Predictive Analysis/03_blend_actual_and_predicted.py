@@ -1,16 +1,21 @@
-# === Step 3: Blend actual + predicted → `swam_filled` ===
 import pandas as pd
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 
+# Connect to database
 engine = create_engine("postgresql+psycopg2://postgres:ScrumShankRedemp!@localhost:5432/ScrumRedemp")
 
+# Read from existing model output
 df = pd.read_sql("SELECT * FROM swam_predicted_table", engine)
 
-# Use actual_swam unless all original fields were null
-missing_mask = df[['swam_minority', 'swam_woman', 'swam_small', 'swam_micro_business']].isnull().all(axis=1)
-df['swam_filled'] = df['actual_swam']
-df.loc[missing_mask, 'swam_filled'] = df.loc[missing_mask, 'swam_predicted']
+# Correct swam_filled logic
+df['swam_filled'] = df.apply(
+    lambda row: row['actual_swam'] if pd.notnull(row['actual_swam']) else row['swam_predicted'],
+    axis=1
+)
 
-df.to_sql("swam_filled_table", engine, if_exists="replace", index=False)
+# 🔄 Manual overwrite logic:
+with engine.begin() as conn:
+    conn.execute(text("TRUNCATE TABLE swam_filled_table;"))
+    df.to_sql("swam_filled_table", con=conn, if_exists="append", index=False)
 
-print("✅ Step 3 complete: 'swam_filled' generated. You’re ready to visualize!")
+print("✅ Table cleared and refreshed without dropping or breaking views.")
